@@ -1,0 +1,43 @@
+trainer:
+  max_epochs: 100
+  logger:
+    class_path: lightning.pytorch.loggers.wandb.WandbLogger
+    init_args:
+      resume: allow
+      project: "eomt"
+      name: "camvid_semantic_eomt_large_720"
+  callbacks:
+    - class_path: lightning.pytorch.callbacks.ModelCheckpoint
+      init_args:
+        dirpath: checkpoints/
+        filename: "final_model-spa_wet0.1"
+        monitor: "metrics/val_iou_all"
+        save_top_k: 1
+        mode: "max"
+        verbose: true
+    
+
+model:
+  class_path: training.mask_classification_semantic.MaskClassificationSemantic
+  init_args:
+    attn_mask_annealing_enabled: True
+    attn_mask_annealing_start_steps: [300, 750, 1350, 2000]
+    attn_mask_annealing_end_steps: [750, 1350, 2000, 3000]
+    network:
+      class_path: models.eomt.EoMT
+      init_args:
+        num_q: 100
+        use_dual_attention: True
+        spatial_weight: 1
+        # SegVit 多 mask 融合：8/16 层 patch 与专用 query 点积后与最终 mask 融合
+        use_atm_fusion: True
+        atm_layer_indices: [7, 15]   # 第 8、16 层 (0-based)
+        atm_fusion_weight: 0.7
+
+        encoder:
+          class_path: models.vit.ViT
+
+data:
+  class_path: datasets.camvid_semantic.CamVidSemantic
+  init_args:
+    img_size: [480,360]

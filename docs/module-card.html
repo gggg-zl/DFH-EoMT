@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Module Card Component</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 400px;
+        }
+
+        .module-card {
+            background: #ffffff;
+            border-radius: 16px;
+            padding: 24px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer;
+        }
+
+        .module-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.2);
+        }
+
+        .icon-wrapper {
+            width: 56px;
+            height: 56px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 12px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-shrink: 0;
+        }
+
+        .icon-wrapper svg {
+            width: 28px;
+            height: 28px;
+            fill: none;
+            stroke: #ffffff;
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        .content {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .module-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #1a1a2e;
+            margin-bottom: 6px;
+        }
+
+        .progress-text {
+            font-size: 13px;
+            color: #6b7280;
+            margin-bottom: 10px;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 6px;
+            background: #e5e7eb;
+            border-radius: 3px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            width: 33.33%;
+            height: 100%;
+            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+            border-radius: 3px;
+            transition: width 0.5s ease;
+        }
+
+        .arrow-btn {
+            width: 44px;
+            height: 44px;
+            background: #f3f4f6;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-shrink: 0;
+            transition: background 0.3s ease, transform 0.3s ease;
+        }
+
+        .arrow-btn:hover {
+            background: #667eea;
+        }
+
+        .arrow-btn:hover svg {
+            stroke: #ffffff;
+        }
+
+        .arrow-btn svg {
+            width: 20px;
+            height: 20px;
+            fill: none;
+            stroke: #6b7280;
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            transition: stroke 0.3s ease;
+        }
+
+        /* Demo: Dark variant */
+        .module-card.dark {
+            background: #1e1e2e;
+        }
+
+        .module-card.dark .module-title {
+            color: #ffffff;
+        }
+
+        .module-card.dark .progress-text {
+            color: #a0a0a0;
+        }
+
+        .module-card.dark .progress-bar {
+            background: #3a3a4a;
+        }
+
+        .module-card.dark .arrow-btn {
+            background: #2a2a3a;
+        }
+
+        .module-card.dark .arrow-btn svg {
+            stroke: #a0a0a0;
+        }
+
+        /* Demo: Colored variant */
+        .module-card.colored {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        .module-card.colored .module-title {
+            color: #ffffff;
+        }
+
+        .module-card.colored .progress-text {
+            color: rgba(255, 255, 255, 0.85);
+        }
+
+        .module-card.colored .progress-bar {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        .module-card.colored .progress-fill {
+            background: rgba(255, 255, 255, 0.9);
+        }
+
+        .module-card.colored .arrow-btn {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .module-card.colored .arrow-btn svg {
+            stroke: #ffffff;
+        }
+
+        .module-card.colored .icon-wrapper {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .demo-container {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .demo-label {
+            color: white;
+            font-size: 14px;
+            margin-bottom: 8px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="demo-container">
+        <p class="demo-label">Light Theme</p>
+        <div class="module-card" id="module1">
+            <div class="icon-wrapper">
+                <svg viewBox="0 0 24 24">
+                    <path d="M12 2L2 7l10 5 10-5-10-5z"/>
+                    <path d="M2 17l10 5 10-5"/>
+                    <path d="M2 12l10 5 10-5"/>
+                </svg>
+            </div>
+            <div class="content">
+                <div class="module-title">Module 3</div>
+                <div class="progress-text">2 of 6 Completed</div>
+                <div class="progress-bar">
+                    <div class="progress-fill"></div>
+                </div>
+            </div>
+            <div class="arrow-btn">
+                <svg viewBox="0 0 24 24">
+                    <polyline points="9 18 15 12 9 6"/>
+                </svg>
+            </div>
+        </div>
+
+        <p class="demo-label">Dark Theme</p>
+        <div class="module-card dark">
+            <div class="icon-wrapper">
+                <svg viewBox="0 0 24 24">
+                    <path d="M12 2L2 7l10 5 10-5-10-5z"/>
+                    <path d="M2 17l10 5 10-5"/>
+                    <path d="M2 12l10 5 10-5"/>
+                </svg>
+            </div>
+            <div class="content">
+                <div class="module-title">Module 3</div>
+                <div class="progress-text">2 of 6 Completed</div>
+                <div class="progress-bar">
+                    <div class="progress-fill"></div>
+                </div>
+            </div>
+            <div class="arrow-btn">
+                <svg viewBox="0 0 24 24">
+                    <polyline points="9 18 15 12 9 6"/>
+                </svg>
+            </div>
+        </div>
+
+        <p class="demo-label">Gradient Theme</p>
+        <div class="module-card colored">
+            <div class="icon-wrapper">
+                <svg viewBox="0 0 24 24">
+                    <path d="M12 2L2 7l10 5 10-5-10-5z"/>
+                    <path d="M2 17l10 5 10-5"/>
+                    <path d="M2 12l10 5 10-5"/>
+                </svg>
+            </div>
+            <div class="content">
+                <div class="module-title">Module 3</div>
+                <div class="progress-text">2 of 6 Completed</div>
+                <div class="progress-bar">
+                    <div class="progress-fill"></div>
+                </div>
+            </div>
+            <div class="arrow-btn">
+                <svg viewBox="0 0 24 24">
+                    <polyline points="9 18 15 12 9 6"/>
+                </svg>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.querySelectorAll('.module-card').forEach(card => {
+            card.addEventListener('click', function() {
+                console.log('Module clicked');
+            });
+        });
+    </script>
+</body>
+</html>
